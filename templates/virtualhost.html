@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+
+    <title>虚拟云服务</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-slider.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+    <script type='text/javascript' src="{% static 'js/jquery.js' %}"></script>
+
+    <script type='text/javascript' src="{% static 'js/bootstrap-slider.js' %}"></script>
+    <!-- Main css -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vm.css' %}">
+    <!-- Google Font -->
+    <link href='https://fonts.googleapis.com/css?family=Poppins:400,500,600' rel='stylesheet' type='text/css'>
+     <script type="text/javascript">
+         $(document).ready(function(){
+             var addrli='';
+             var sysli='';
+             var ram='';
+             var cpu='';
+             $(".addrli").click(function(){
+                 addrli = $(this).find('input[type=button]').attr("id");
+             });
+             $(".sysli").click(function(){
+                sysli = $(this).find('input[type=button]').attr("id");
+             });
+                $(".subinput").click(function () {
+                    var vm_region = addrli;
+                    var vm_type = sysli;
+                    var raminput = $(".raminput").val();
+                    switch(raminput){
+                        case "1":
+                            ram = 1;
+                            break;
+                        case "2":
+                            ram = 2;
+                            break;
+                        case "3":
+                            ram = 4;
+                            break;
+                        case "4":
+                            ram = 8;
+                            break;
+                    };
+                    var cpuinput = $(".cpuinput").val();
+                    switch(cpuinput){
+                        case "1":
+                            cpu = 1;
+                            break;
+                        case "2":
+                            cpu = 2;
+                            break;
+                        case "3":
+                            cpu = 4;
+                            break;
+                        case "4":
+                            cpu = 8;
+                            break;
+                    };
+                    var disk = $(".chosen-select").find("option:selected").text();
+                    switch(disk){
+                        case "50G":
+                            disk = 50;
+                            break;
+                        case "80G":
+                            disk = 80;
+                            break;
+                        case "100G":
+                            disk = 100;
+                            break;
+                    };
+                    var apply_time = Math.floor(new Date().getTime()/1000);
+                    var password = $(".ps").val();
+                    $.ajax({
+                        type:"POST",
+                        data: {'vm_region':vm_region,'vm_type':vm_type,'apply_time':apply_time,'password':password,'disk':disk,'memory':ram,'cpu':cpu},
+                        url: "{% url 'vm:apply_vm' %}",
+                        success:function(data){
+                            console.log(data)
+
+                            if(data["st"] == 1){
+                                alert("申请成功")
+                                window.location.href="{% url 'index' %}"
+                            }
+                            else {
+                                alert("申请失败")
+                                window.location.href="{% url 'vm:apply_vm' %}"
+                            }
+                        },
+                        error:function(){
+                            alert("false");
+                        }
+                    })
+                })
+        })
+
+    </script>
+
+</head>
+<body data-spy="scroll" data-offset="50" data-target=".navbar-collapse">
+
+
+
+<!-- =========================
+     NAVIGATION LINKS
+============================== -->
+<div class="navbar navbar-fixed-top custom-navbar" role="navigation">
+    <div class="container">
+
+        <!-- navbar header -->
+        <div class="navbar-header">
+            <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon icon-bar"></span>
+                <span class="icon icon-bar"></span>
+                <span class="icon icon-bar"></span>
+            </button>
+            <a href="{% url 'index' %}" class="navbar-brand">DragonStack Cloud</a>
+        </div>
+
+        <div class="collapse navbar-collapse">
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{% url 'index' %}" class="smoothScroll">首页</a></li>
+                <li><a href="#overview" class="smoothScroll">虚拟云</a></li>
+                <li><a href="#multiple" class="smoothScroll">多域协同</a></li>
+                <li><a href="#venue" class="smoothScroll">对象存储</a></li>
+                <li><a href="#register" class="smoothScroll">物联网服务</a></li>
+                <li><a href="#faq" class="smoothScroll">关于</a></li>
+                <li><a href="#contact" class="smoothScroll">加入我们</a></li>
+            </ul>return render_to_response("virtualhost.html")
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+<!-- =========================
+    PROGRAM SECTION
+============================== -->return render_to_response("virtualhost.html")
+<section id="program" class="parallax-section">
+    <div class="container">
+        <div class="row">
+
+            <div class="wow fadeInUp col-md-12 col-sm-12" data-wow-delay="0.6s">
+                <div class="section-title">
+                    <h2>虚拟云主机申请</h2>
+                </div>
+            </div>
+            <form>
+                <div class="addr">
+                    <dl>
+
+                        <dd>
+                            <label>地域选择：</label>
+                            <ul>
+                                <li class="addrli">
+                                    <input type="button" value="西电北校区(KVM)" id="31">
+                                </li>
+                                <li class="addrli">
+                                    <input type="button" value="西电南校区" id="1">
+                                </li>
+                                <li class="addrli">
+                                    <input type="button" value="河南工业大学" id="32">
+                                </li>
+                            </ul>
+                        </dd>
+                    </dl>
+                    </br></br></br>
+                    <p class="addrfont">用户可根据需求选择相应地域。</p>
+                </div>
+                <div class="sys">
+                    <dl>
+
+                        <dd>
+                            <label>镜像选择：</label>
+                            <ul>
+                                <li class="sysli">
+
+                                    <input type="button" class="syswin " value="Windows 7" id="2">
+                                </li>
+                                <li class="sysli">
+                                    <input type="button" class="sysubu" value="Ubuntu 14.04" id="1">
+                                </li>
+                                <li class="sysli">
+                                    <input type="button" class="syscen" value="Centos" id="5">
+                                </li>
+
+                                <li class="sysli">
+
+                                    <input type="button"class="syswins" value="Windows Server" id="3">
+                                </li>
+                                </br></br></br>
+                                <li class="sysli">
+                                    <input type="button"class="sysubus" value="Ubuntu Server" id="4">
+                                </li>
+
+                            </ul>
+                        </dd>
+                    </dl>
+
+                </div>
+                <div class="ram">
+                    <dl>
+
+                        <dd>
+                            <label>RAM选择：</label>
+                            <input id="ex21" class="raminput" type="text"
+                                   data-provide="slider"
+                                   data-slider-ticks="[1, 2, 3, 4]"
+                                   data-slider-ticks-labels='["1G", "2G", "4G", "8G"]'
+                                   data-slider-min="1"
+                                   data-slider-max="4"
+                                   data-slider-step="1"
+                                   data-slider-value="4"
+                                   data-slider-tooltip="hide" />
+                        </dd>
+                    </dl>
+
+                </div>
+                <div class="cpu">
+                    <dl>
+
+                        <dd>
+                            <label>CPU选择：</label>
+                            <input id="ex22" class="cpuinput" type="text"
+                                   data-provide="slider"
+                                   data-slider-ticks="[1, 2, 3, 4]"
+                                   data-slider-ticks-labels='["1核", "2核", "4核", "8核"]'
+                                   data-slider-min="1"
+                                   data-slider-max="4"
+                                   data-slider-step="1"
+                                   data-slider-value="4"
+                                   data-slider-tooltip="hide" />
+                        </dd>
+                    </dl>
+
+                </div>
+                <div class="hdisk">
+                    <dl>
+
+                        <dd>
+                            <label>硬盘选择：</label>
+                            <select data-placeholder="选择硬盘大小" class="chosen-select" >
+                                <option value="">-------选择硬盘大小-------</option>
+                                <option value="50">50G</option>
+                                <option value="80">80G</option>
+                                <option value="100">100G</option>
+                            </select>
+                        </dd>
+                    </dl>
+
+                </div>
+
+                 <div class="password">
+                    <dl>
+
+                        <dd>
+                            <label>虚拟机密码：</label>
+                            <input type="password" class="ps" />
+                        </dd>
+                    </dl>
+
+                </div>
+
+                <input type="button" class="subinput" value="立即申请"href=""/>
+            </form>
+
+
+        </div>
+    </div>
+</section>
+
+
+
+<!-- =========================
+    FOOTER SECTION
+============================== -->
+<footer>
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12 col-sm-12">
+                <p class="wow fadeInUp" data-wow-delay="0.6s">Copyright © 2017 Provincial Key Laboratory of Network and System Security, Xidian University, Shaanxi Province, China.
+
+                </p>
+
+                <ul class="social-icon">
+                    <li><a href="#" class="fa fa-qq wow fadeInUp" data-wow-delay="1s"></a></li>
+                    <li><a href="#" class="fa fa-weixin wow fadeInUp" data-wow-delay="1.3s"></a></li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+
+<!-- Back top -->
+<a href="#back-top" class="go-top"><i class="fa fa-angle-up"></i></a>
+
+
+<!-- =========================
+     SCRIPTS
+============================== -->
+<script src="{% static 'js/jquery.parallax.js' %}"></script>
+
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<script src="{% static 'js/vm.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/smoothscroll.js' %}"></script>
+<script src="{% static 'js/wow.min.js' %}"></script>
+<script src="{% static 'js/custom.js' %}"></script>
+
+
+
+</body>
+</html>

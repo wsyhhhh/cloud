@@ -1,0 +1,116 @@
+<!doctype html>
+{% load static %}
+<html lang="zh">
+<head>
+    <title>Dragon Stack Cloud 注册</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="{% static 'css/style2.css' %}" rel='stylesheet' type='text/css' />
+    <link href="{% static 'css/validationEngine.jquery.css' %}" rel='stylesheet' type='text/css' />
+    <style>
+        #regButton{
+            font-size: 1em;
+            color: #fff;
+            background: #2dde98;
+            outline: none;
+            border: none;
+            cursor: pointer;
+            padding: 15px 10px;
+            -webkit-appearance: none;
+            width: 100%;
+            font-weight: 400;
+            transition: .5s all;
+            -webkit-transition: .5s all;
+            -moz-transition: .5s all;
+            -o-transition: .5s all;
+            -ms-transition: .5s all;
+            text-transform: uppercase;
+            margin-top: 1.3em;
+            font-family: 'Rationale', sans-serif;
+        }
+    </style>
+    <!-- js -->
+    <script>window.jQuery || document.write('<script src="{% static 'js/jquery-2.1.1.min.js' %}"><\/script>')</script>
+    <script src="{% static 'js/jquery.validationEngine.js'%}"></script>
+    <script src="{% static 'js/jquery.validationEngine.min.js'%}"></script>
+    <script src="{% static 'js/vidbg.js'%}"></script>
+    <script src="{% static 'js/jquery.form.js'%}"></script>
+    <script type="text/javascript">
+        jQuery(function($){
+            $('body').vidbg({
+                'mp4': "{% static 'images/mp4.mp4'%}",
+            }, {
+                // Options
+                muted: true,
+                loop: true,
+                overlay: true,
+            });
+        });
+
+        $(document).ready(function(){
+				jQuery("#regForm").validationEngine({scroll:false});
+                $("#regButton").click(function () {
+                     if(!$("form#regForm").validationEngine("validate")) return ;
+                    var username = $("#id_username").val();
+                    var password = $("#id_password2").val();
+                    var email = $("#id_email").val();
+                    $.ajax({
+                        type:"POST",
+                        data: {'username':username,'password':password,'email':email},
+                        url: "{% url 'users:regist' %}",
+                        success:function(data){
+                            console.log(data)
+                             //data = JSON.parse(data);
+                            if(data["st"] == 1){
+                                alert("注册成功")
+                            }
+                            else {
+                                alert("注册失败")
+                            }
+                        },
+                        error:function(){
+                            alert("false");
+                        }
+                    })
+                })
+        })
+    </script>
+</head>
+<body>
+<h1><a href="index.html"style="color:white">Dragon Stack Cloud</a></h1>
+<div class="main">
+
+
+    <div class="login-top left">
+        <div class="social_icons">
+            <div class="w3-signup-head-top">
+                <h3>注册</h3>
+            </div>
+
+        </div>
+        <form action="{% url 'users:regist' %}" method="post" id="regForm">
+
+            <input type="text" id="id_username" name="username" class="name validate[required,custom[LetterNumberunder],maxSize[20],ajax[ajaxNameCall]]" placeholder="Name" required="">
+            <input type="text" id="id_email" name="email" class="email validate[required,custom[email]" placeholder="Your Email" required="">
+            <input type="password" id="id_password1"name="password1" class="password validate[required,minSize[6],maxSize[20]]" placeholder="Password" required="">
+
+            <input type="password" id="id_password2" name="password2" class="password validate[required,equals[id_password1]]" placeholder="Confirm Password" required="">
+
+            <input type="button" value="注册" id="regButton">
+        </form>
+        <div class="w3-bottom-text">
+            <h3><a href="{% url 'users:login' %}">已有账号<span>?</span></a></h3>
+            <h4><a href="{% url 'users:login' %}">登录</a></h4>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+
+</div>
+<div class="clear"></div>
+<div class="copy-right w3l-agile">
+    <p>Copyright © 2017 Provincial Key Laboratory of Network and System Security, Xidian University, Shaanxi Province, China.</p>
+</div>
+
+
+</body>
+</html>
